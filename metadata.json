@@ -1,0 +1,6 @@
+{
+  "name": "Sri Maruthi Power House Gym 24/7",
+  "description": "Sri Maruthi Power House Gym 24/7 in Jigani, Bengaluru - Premier fitness center with modern machines, free weights, certified coaching, and comprehensive gym management portal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

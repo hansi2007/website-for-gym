@@ -1,0 +1,238 @@
+{
+  "entities": {
+    "GymSettings": {
+      "title": "GymSettings",
+      "description": "General gym configuration and editable business profile",
+      "type": "object",
+      "properties": {
+        "businessName": { "type": "string" },
+        "address": { "type": "string" },
+        "phone": { "type": "string" },
+        "whatsappNumber": { "type": "string" },
+        "googleMapsUrl": { "type": "string" },
+        "openingHours": { "type": "string" },
+        "ratingSnapshot": { "type": "number" },
+        "reviewCountSnapshot": { "type": "number" },
+        "is24x7Confirmed": { "type": "boolean" },
+        "announcement": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["businessName", "address", "phone"]
+    },
+    "MembershipPlan": {
+      "title": "MembershipPlan",
+      "description": "Configurable membership tiers and pricing",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "durationMonths": { "type": "number" },
+        "category": { "type": "string" },
+        "benefits": { "type": "array" },
+        "terms": { "type": "string" },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "price", "durationMonths", "isPublished"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "Registered gym members",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "joinDate": { "type": "string" },
+        "status": { "type": "string" },
+        "currentPlanId": { "type": "string" },
+        "currentPlanName": { "type": "string" },
+        "currentStartDate": { "type": "string" },
+        "currentExpiryDate": { "type": "string" },
+        "emergencyContact": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "phone", "joinDate", "status"]
+    },
+    "Membership": {
+      "title": "Membership",
+      "description": "Member subscription assignments with start and expiry dates",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string" },
+        "memberName": { "type": "string" },
+        "planId": { "type": "string" },
+        "planName": { "type": "string" },
+        "price": { "type": "number" },
+        "startDate": { "type": "string" },
+        "expiryDate": { "type": "string" },
+        "status": { "type": "string" },
+        "isPaid": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["memberId", "planId", "startDate", "expiryDate", "status"]
+    },
+    "Attendance": {
+      "title": "Attendance",
+      "description": "Daily gym check-ins and check-outs",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string" },
+        "memberName": { "type": "string" },
+        "dateKey": { "type": "string" },
+        "checkInTime": { "type": "string" },
+        "checkOutTime": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["memberId", "memberName", "dateKey", "checkInTime"]
+    },
+    "Enquiry": {
+      "title": "Enquiry",
+      "description": "Trial bookings and website enquiries from visitors",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "preferredDate": { "type": "string" },
+        "preferredTime": { "type": "string" },
+        "fitnessGoal": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string" },
+        "internalNotes": { "type": "string" },
+        "source": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["fullName", "phone", "status"]
+    },
+    "PaymentRecord": {
+      "title": "PaymentRecord",
+      "description": "Verified member payment records",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string" },
+        "memberName": { "type": "string" },
+        "membershipId": { "type": "string" },
+        "planName": { "type": "string" },
+        "amount": { "type": "number" },
+        "currency": { "type": "string" },
+        "paymentDate": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "paymentStatus": { "type": "string" },
+        "transactionReference": { "type": "string" },
+        "notes": { "type": "string" },
+        "verifiedBy": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["memberId", "memberName", "amount", "paymentDate", "paymentMethod", "paymentStatus"]
+    },
+    "Trainer": {
+      "title": "Trainer",
+      "description": "Gym trainer and coach profiles",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "specialization": { "type": "string" },
+        "qualifications": { "type": "string" },
+        "experience": { "type": "string" },
+        "bio": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "isAvailable": { "type": "boolean" },
+        "displayOrder": { "type": "number" }
+      },
+      "required": ["name", "role", "specialization"]
+    },
+    "GalleryItem": {
+      "title": "GalleryItem",
+      "description": "Gym facility and workout photographs",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "description": { "type": "string" },
+        "displayOrder": { "type": "number" }
+      },
+      "required": ["title", "category", "imageUrl"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Audit trail for sensitive admin operations",
+      "type": "object",
+      "properties": {
+        "action": { "type": "string" },
+        "entityType": { "type": "string" },
+        "entityId": { "type": "string" },
+        "details": { "type": "string" },
+        "performedByEmail": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["action", "entityType", "timestamp"]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Privileged staff administrators",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "name": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/gymSettings/{settingId}": {
+      "schema": { "$ref": "#/entities/GymSettings" },
+      "description": "Global gym settings and public business profile"
+    },
+    "/membershipPlans/{planId}": {
+      "schema": { "$ref": "#/entities/MembershipPlan" },
+      "description": "Configured membership plans shown to public when published"
+    },
+    "/members/{memberId}": {
+      "schema": { "$ref": "#/entities/Member" },
+      "description": "Private member records managed by staff"
+    },
+    "/memberships/{membershipId}": {
+      "schema": { "$ref": "#/entities/Membership" },
+      "description": "Active, expiring and past member subscriptions"
+    },
+    "/attendance/{attendanceId}": {
+      "schema": { "$ref": "#/entities/Attendance" },
+      "description": "Daily attendance logs for members"
+    },
+    "/enquiries/{enquiryId}": {
+      "schema": { "$ref": "#/entities/Enquiry" },
+      "description": "Public trial bookings and contact enquiries"
+    },
+    "/paymentRecords/{paymentId}": {
+      "schema": { "$ref": "#/entities/PaymentRecord" },
+      "description": "Audited payment records for gym subscriptions"
+    },
+    "/trainers/{trainerId}": {
+      "schema": { "$ref": "#/entities/Trainer" },
+      "description": "Trainer profiles displayed on website"
+    },
+    "/gallery/{galleryId}": {
+      "schema": { "$ref": "#/entities/GalleryItem" },
+      "description": "Photographs for gym gallery"
+    },
+    "/auditLogs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Audit trail records for admin activities"
+    },
+    "/admins/{userId}": {
+      "schema": { "$ref": "#/entities/AdminUser" },
+      "description": "Admin staff user permissions"
+    }
+  }
+}

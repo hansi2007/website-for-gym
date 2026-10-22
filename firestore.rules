@@ -1,0 +1,111 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'www.hansika2007@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidEnquiryCreate(data) {
+      return data.keys().hasAll(['fullName', 'phone', 'status', 'createdAt']) &&
+        data.keys().hasOnly(['fullName', 'phone', 'email', 'preferredDate', 'preferredTime', 'fitnessGoal', 'message', 'status', 'internalNotes', 'source', 'createdAt', 'updatedAt']) &&
+        data.status == 'New' &&
+        data.fullName is string && data.fullName.size() >= 2 && data.fullName.size() <= 100 &&
+        data.phone is string && data.phone.size() >= 7 && data.phone.size() <= 20 &&
+        (!('email' in data) || (data.email is string && data.email.size() <= 120)) &&
+        (!('preferredDate' in data) || (data.preferredDate is string && data.preferredDate.size() <= 30)) &&
+        (!('preferredTime' in data) || (data.preferredTime is string && data.preferredTime.size() <= 30)) &&
+        (!('fitnessGoal' in data) || (data.fitnessGoal is string && data.fitnessGoal.size() <= 200)) &&
+        (!('message' in data) || (data.message is string && data.message.size() <= 1000)) &&
+        (!('source' in data) || (data.source is string && data.source.size() <= 50)) &&
+        (!('internalNotes' in data) || (data.internalNotes is string && data.internalNotes.size() <= 2000)) &&
+        data.createdAt is string && data.createdAt.size() <= 50;
+    }
+
+    // Public gym profile & settings (viewable by public, editable by admin)
+    match /gymSettings/{settingId} {
+      allow get: if isValidId(settingId);
+      allow list, write: if isAdmin();
+    }
+
+    // Membership plans (published plans readable by public, full control by admin)
+    match /membershipPlans/{planId} {
+      allow get: if isValidId(planId) && (resource.data.isPublished == true || isAdmin());
+      allow list: if resource.data.isPublished == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Trainers (viewable by public, manageable by admin)
+    match /trainers/{trainerId} {
+      allow get, list: if true;
+      allow write: if isAdmin();
+    }
+
+    // Gallery photographs (viewable by public, manageable by admin)
+    match /gallery/{galleryId} {
+      allow get, list: if true;
+      allow write: if isAdmin();
+    }
+
+    // Visitor enquiries & trial bookings (public can create validated submissions; only admins can read & manage)
+    match /enquiries/{enquiryId} {
+      allow create: if isValidId(enquiryId) && isValidEnquiryCreate(incoming());
+      allow get, list, update, delete: if isAdmin();
+    }
+
+    // Private member records (Admin only)
+    match /members/{memberId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Private subscriptions (Admin only)
+    match /memberships/{membershipId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Private attendance records (Admin only)
+    match /attendance/{attendanceId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Private verified payment records (Admin only)
+    match /paymentRecords/{paymentId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Audit logs (Admin only)
+    match /auditLogs/{logId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Admin role records (Self-read for authenticated users, full management by admins)
+    match /admins/{userId} {
+      allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow list, write: if isAdmin();
+    }
+  }
+}
